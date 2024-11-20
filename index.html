@@ -45,6 +45,41 @@
   </table>
 
   <script>
+    <script>
+  // Function to fetch and display metrics
+  async function fetchMetrics() {
+    const input = document.getElementById("urlInput").value.trim();
+    const output = document.getElementById("output");
+    output.innerHTML = "Loading metrics..."; // Show loading message
+
+    if (!input) {
+      output.innerHTML = "Please enter a valid URL.";
+      return;
+    }
+
+    try {
+      // Fetch metrics from the Lighthouse backend
+      const response = await fetch(`http://localhost:3000/lighthouse?url=${encodeURIComponent(input)}`);
+      if (!response.ok) throw new Error("Failed to fetch metrics.");
+
+      const metrics = await response.json();
+
+      // Display metrics in the output area
+      output.innerHTML = `
+        <pre>
+        url  : ${metrics.url}
+        fcp  : ${metrics.fcp}
+        lcp  : ${metrics.lcp}
+        fid  : ${metrics.fid}
+        cls  : ${metrics.cls}
+        ttfb : ${metrics.ttfb}
+        </pre>
+      `;
+    } catch (error) {
+      console.error(error);
+      output.innerHTML = "Error fetching metrics. Ensure the backend server is running.";
+    }
+  }
     document.getElementById('checkButton').addEventListener('click', function () {
       const url = document.getElementById('urlInput').value.trim();
       if (!url) {

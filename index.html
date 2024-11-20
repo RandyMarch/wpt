@@ -3,30 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Game List</title>
+    <title>Game Reflections</title>
 </head>
 <body>
     <h1>Game List</h1>
-    <div id="game-list"></div>
-
-    <script>
-        // List of game App IDs
-        const appIds = [1643320, 20510, 41700];
-
-        // Reference to the container div
-        const gameList = document.getElementById('game-list');
-
-        // Loop through the list and create iframes
-        appIds.forEach(appId => {
-            const iframe = document.createElement('iframe');
-            iframe.src = `https://steamdb.info/embed/?appid=${appId}`;
-            iframe.height = '389';
-            iframe.style.border = '0';
-            iframe.style.overflow = 'hidden';
-            iframe.style.width = '100%';
-            iframe.loading = 'lazy';
-            gameList.appendChild(iframe);
-        });
-    </script>
+    <div id="game-list">
+        <iframe src="https://steamdb.info/embed/?appid=394360" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
+        <iframe src="https://steamdb.info/embed/?appid=236390" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
+        <iframe src="https://steamdb.info/embed/?appid=2300320" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
+        <iframe src="https://steamdb.info/embed/?appid=227300" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
+        <iframe src="https://steamdb.info/embed/?appid=221100" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
+    </div>
 </body>
 </html>

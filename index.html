@@ -3,16 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Reflections</title>
+    <title>Game Reflections - 1 Year Data</title>
 </head>
 <body>
-    <h1>Game List</h1>
-    <div id="game-list">
-        <iframe src="https://steamdb.info/embed/?appid=394360" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
-        <iframe src="https://steamdb.info/embed/?appid=236390" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
-        <iframe src="https://steamdb.info/embed/?appid=2300320" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
-        <iframe src="https://steamdb.info/embed/?appid=227300" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
-        <iframe src="https://steamdb.info/embed/?appid=221100" height="389" style="border:0;overflow:hidden;width:100%" loading="lazy"></iframe>
-    </div>
+    <h1>Game List with 1-Year Data</h1>
+    <div id="game-list"></div>
+
+    <script>
+        // List of game App IDs
+        const appIds = [
+            394360, // Hearts of Iron IV
+            236390, // War Thunder
+            2300320, // Starfield
+            227300, // Euro Truck Simulator 2
+            221100  // DayZ
+        ];
+
+        // Reference to the container div
+        const gameList = document.getElementById('game-list');
+
+        // Generate and append iframe elements dynamically
+        appIds.forEach(appId => {
+            const iframe = document.createElement('iframe');
+            // Append the `range=1year` query parameter to test extended data
+            iframe.src = `https://steamdb.info/embed/?appid=${appId}&range=1year`;
+            iframe.height = '389';
+            iframe.style.border = '0';
+            iframe.style.overflow = 'hidden';
+            iframe.style.width = '100%';
+            iframe.loading = 'lazy';
+            gameList.appendChild(iframe);
+        });
+    </script>
 </body>
 </html>

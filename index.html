@@ -1,179 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Vitals Metrics for Any Website</title>
-  <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f4f4f4;
-    }
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SteamDB App List</title>
 </head>
 <body>
-<h1>Web Performance Metrics</h1>
-<input type="text" id="urlInput" placeholder="Enter URL (e.g., https://example.com)">
-<button onclick="fetchMetrics()">Get Metrics</button>
-<div id="output"></div>
+    <h1>SteamDB App List</h1>
+    <div id="iframe-list"></div>
 
-  <table id="metricsTable">
-    <thead>
-      <tr>
-        <th>Performance Metric</th>
-        <th>URL</th>
-        <th>Value</th>
-        <th>Recommended Threshold</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Metrics will be inserted here dynamically -->
-    </tbody>
-  </table>
-
-  <script>
     <script>
-  // Function to fetch and display metrics
-  async function fetchMetrics() {
-    const input = document.getElementById("urlInput").value.trim();
-    const output = document.getElementById("output");
-    output.innerHTML = "Loading metrics..."; // Show loading message
+        // Array of app IDs
+        const appIds = [1643320, 1234567, 7654321, 9876543];
 
-    if (!input) {
-      output.innerHTML = "Please enter a valid URL.";
-      return;
-    }
+        // Reference to the container div
+        const iframeList = document.getElementById('iframe-list');
 
-    try {
-      // Fetch metrics from the Lighthouse backend
-      const response = await fetch(`http://localhost:3000/lighthouse?url=${encodeURIComponent(input)}`);
-      if (!response.ok) throw new Error("Failed to fetch metrics.");
-
-      const metrics = await response.json();
-
-      // Display metrics in the output area
-      output.innerHTML = `
-        <pre>
-        url  : ${metrics.url}
-        fcp  : ${metrics.fcp}
-        lcp  : ${metrics.lcp}
-        fid  : ${metrics.fid}
-        cls  : ${metrics.cls}
-        ttfb : ${metrics.ttfb}
-        </pre>
-      `;
-    } catch (error) {
-      console.error(error);
-      output.innerHTML = "Error fetching metrics. Ensure the backend server is running.";
-    }
-  }
-    document.getElementById('checkButton').addEventListener('click', function () {
-      const url = document.getElementById('urlInput').value.trim();
-      if (!url) {
-        alert('Please enter a valid URL.');
-        return;
-      }
-
-      // Clear previous results
-      const tableBody = document.querySelector("#metricsTable tbody");
-      tableBody.innerHTML = '';
-
-      // Use an iframe to load the external website
-      const iframe = document.createElement('iframe');
-      iframe.src = url;
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-
-      iframe.onload = function () {
-        const iframeWindow = iframe.contentWindow;
-
-        if (!iframeWindow) {
-          alert('Unable to load the website. Check the URL or permissions.');
-          return;
-        }
-
-        const webVitalsScript = document.createElement('script');
-        webVitalsScript.src = "https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js";
-        webVitalsScript.onload = () => {
-          iframeWindow.webVitals.getCLS((metric) =>
-            addRowToTable("Cumulative Layout Shift (CLS)", metric.value, url, {
-              good: 0.1,
-              needsImprovement: 0.25,
-            })
-          );
-          iframeWindow.webVitals.getFID((metric) =>
-            addRowToTable("First Input Delay (FID)", metric.value, url, {
-              good: 100,
-              needsImprovement: 300,
-            })
-          );
-          iframeWindow.webVitals.getLCP((metric) =>
-            addRowToTable("Largest Contentful Paint (LCP)", metric.value / 1000, url, {
-              good: 2.5,
-              needsImprovement: 4,
-            })
-          );
-          iframeWindow.webVitals.getFCP((metric) =>
-            addRowToTable("First Contentful Paint (FCP)", metric.value / 1000, url, {
-              good: 1.8,
-              needsImprovement: 3,
-            })
-          );
-          iframeWindow.webVitals.getTTFB((metric) =>
-            addRowToTable("Time to First Byte (TTFB)", metric.value, url, {
-              good: 200,
-              needsImprovement: Infinity, // Only checks for "Good" in TTFB
-            })
-          );
-          iframeWindow.webVitals.getINP((metric) =>
-            addRowToTable("Interaction to Next Paint (INP)", metric.value, url, {
-              good: 200,
-              needsImprovement: 500,
-            })
-          );
-        };
-
-        iframeWindow.document.body.appendChild(webVitalsScript);
-      };
-    });
-
-    // Function to add rows to the table
-    function addRowToTable(name, value, url, thresholds) {
-      let status;
-      if (value <= thresholds.good) {
-        status = "Good";
-      } else if (value <= thresholds.needsImprovement) {
-        status = "Needs Improvement";
-      } else {
-        status = "Poor";
-      }
-
-      const tableBody = document.querySelector("#metricsTable tbody");
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${name}</td>
-        <td>${url}</td>
-        <td>${value.toFixed(2)} ${name === "Time to First Byte (TTFB)" ? "ms" : "s"}</td>
-        <td>Good: ≤ ${thresholds.good}${name === "Time to First Byte (TTFB)" ? " ms" : " s"}, 
-            Needs Improvement: ${thresholds.good} – ${thresholds.needsImprovement}${name === "Time to First Byte (TTFB)" ? " ms" : " s"}, 
-            Poor: > ${thresholds.needsImprovement}${name === "Time to First Byte (TTFB)" ? " ms" : " s"}</td>
-        <td>${status}</td>
-      `;
-      tableBody.appendChild(row);
-    }
-  </script>
+        // Generate and append iframe elements
+        appIds.forEach(appId => {
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://steamdb.info/embed/?appid=${appId}`;
+            iframe.height = '389';
+            iframe.style.border = '0';
+            iframe.style.overflow = 'hidden';
+            iframe.style.width = '100%';
+            iframe.loading = 'lazy';
+            iframeList.appendChild(iframe);
+        });
+    </script>
 </body>
 </html>

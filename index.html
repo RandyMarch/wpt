@@ -11,11 +11,12 @@
     <script>
         // List of game App IDs
         const appIds = [
-            394360, // Hearts of Iron IV
-            236390, // War Thunder
+            394360,  // Hearts of Iron IV
+            236390,  // War Thunder
             2300320, // Starfield
-            227300, // Euro Truck Simulator 2
-            221100  // DayZ
+            227300,  // Euro Truck Simulator 2
+            221100,  // DayZ
+            1643320  // Additional App ID
         ];
 
         // Reference to the container div
@@ -24,13 +25,14 @@
         // Generate and append iframe elements dynamically
         appIds.forEach(appId => {
             const iframe = document.createElement('iframe');
-            // Append the `range=1year` query parameter to test extended data
+            // Set iframe attributes
             iframe.src = `https://steamdb.info/embed/?appid=${appId}&range=1year`;
             iframe.height = '389';
             iframe.style.border = '0';
             iframe.style.overflow = 'hidden';
             iframe.style.width = '100%';
             iframe.loading = 'lazy';
+            // Append to the game list
             gameList.appendChild(iframe);
         });
     </script>

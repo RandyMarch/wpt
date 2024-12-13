@@ -17,7 +17,9 @@
             2300320, // Starfield
             227300,  // Euro Truck Simulator 2
             221100,  // DayZ
-            1643320  // Additional App ID
+            1643320, // Additional App ID
+            553850,  // New App ID
+            2507950  // Another New App ID
         ];
 
         // Reference to the container div
@@ -36,18 +38,6 @@
             // Append to the game list
             gameList.appendChild(iframe);
         });
-
-        // Add additional iframe for App ID 553850
-        const additionalIframe = document.createElement('iframe');
-        additionalIframe.src = "https://steamdb.info/embed/?appid=553850";
-        additionalIframe.height = "389";
-        additionalIframe.style.border = "0";
-        additionalIframe.style.overflow = "hidden";
-        additionalIframe.style.width = "100%";
-        additionalIframe.loading = "lazy";
-
-        // Append the additional iframe to the game list
-        gameList.appendChild(additionalIframe);
     </script>
 </body>
 </html>

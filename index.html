@@ -36,6 +36,18 @@
             // Append to the game list
             gameList.appendChild(iframe);
         });
+
+        // Add additional iframe for App ID 553850
+        const additionalIframe = document.createElement('iframe');
+        additionalIframe.src = "https://steamdb.info/embed/?appid=553850";
+        additionalIframe.height = "389";
+        additionalIframe.style.border = "0";
+        additionalIframe.style.overflow = "hidden";
+        additionalIframe.style.width = "100%";
+        additionalIframe.loading = "lazy";
+
+        // Append the additional iframe to the game list
+        gameList.appendChild(additionalIframe);
     </script>
 </body>
 </html>
